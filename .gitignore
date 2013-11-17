@@ -36,7 +36,6 @@ nosetests.xml
 .pydevproject
 
 # Custom
-NOTES.md
 downloads/*
 appcfg.py
 dev_appserver.py
