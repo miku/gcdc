@@ -2,10 +2,13 @@ help:
 	@echo make setup-linux
 	@echo make setup-darwin
 
-setup-linux: downloads/google_appengine downloads/go_appengine_linux dev_appserver.py appcfg.py symlink-goapp-linux
+setup-linux: downloads/google_appengine/ downloads/go_appengine_linux/ symlink-gae symlink-goapp-linux
 
-setup-osx: downloads/google_appengine downloads/go_appengine_darwin dev_appserver.py appcfg.py symlink-goapp-darwin
-	
+setup-osx: downloads/google_appengine/ downloads/go_appengine_darwin/ symlink-gae symlink-goapp-darwin
+
+bin/:
+	mkdir -p bin
+
 downloads/:
 	mkdir -p downloads
 
@@ -30,20 +33,18 @@ downloads/google_appengine/: downloads/google_appengine_1.8.7.zip
 	cd downloads && unzip google_appengine_1.8.7.zip
 
 # Dev tools
-dev_appserver.py:
-	ln -s downloads/google_appengine/dev_appserver.py
+symlink-gae: bin/
+	find downloads/google_appengine -depth 1 -type f -name "*py" | xargs -I{} ln -s ../{} bin/
 
-appcfg.py:
-	ln -s downloads/google_appengine/appcfg.py
+symlink-goapp-linux: bin/
+	rm -f bin/goapp
+	ln -s downloads/linux/go_appengine/goapp bin/goapp
 
-symlink-goapp-linux:
-	rm -f goapp
-	ln -s downloads/linux/go_appengine/goapp goapp
-
-symlink-goapp-darwin:
-	rm -f goapp
-	ln -s downloads/darwin/go_appengine/goapp goapp
+symlink-goapp-darwin: bin/
+	rm -f bin/goapp
+	ln -s downloads/darwin/go_appengine/goapp bin/goapp
 
 # Cleanup
 clean:
 	rm -rf downloads
+	rm -rf bin
