@@ -1,10 +1,18 @@
+
+PWD = $(shell pwd)
+PLATFORM=$(shell uname | tr '[:upper:]' '[:lower:]')
+
 help:
 	@echo make setup-linux
 	@echo make setup-darwin
+	@echo PWD: $(PWD), platform: $(PLATFORM)
+	@echo Note: Makefile works for one-time setup only, for now.
+
+setup: setup-$(PLATFORM)
 
 setup-linux: downloads/google_appengine/ downloads/go_appengine_linux/ symlink-gae symlink-goapp-linux
 
-setup-osx: downloads/google_appengine/ downloads/go_appengine_darwin/ symlink-gae symlink-goapp-darwin
+setup-darwin: downloads/google_appengine/ downloads/go_appengine_darwin/ symlink-gae symlink-goapp-darwin
 
 bin/:
 	mkdir -p bin
@@ -34,15 +42,15 @@ downloads/google_appengine/: downloads/google_appengine_1.8.7.zip
 
 # Dev tools
 symlink-gae: bin/
-	find downloads/google_appengine -depth 1 -type f -name "*py" | xargs -I{} ln -s ../{} bin/
+	find $(PWD)/downloads/google_appengine -depth 1 -type f -name "*py" | xargs -I{} ln -s {} $(PWD)/bin/
 
 symlink-goapp-linux: bin/
 	rm -f bin/goapp
-	ln -s downloads/linux/go_appengine/goapp bin/goapp
+	ln -s $(PWD)/downloads/linux/go_appengine/goapp $(PWD)/bin/goapp
 
 symlink-goapp-darwin: bin/
 	rm -f bin/goapp
-	ln -s downloads/darwin/go_appengine/goapp bin/goapp
+	ln -s $(PWD)/downloads/darwin/go_appengine/goapp $(PWD)/bin/goapp
 
 # Cleanup
 clean:
