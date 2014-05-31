@@ -24,9 +24,9 @@ Drive.
 
 **Event Log**
 
-* Konzertkalender Leipzig (Beautiful Event Log)
+* Stylized Event Log (KKL)
 * Backend, Spreadsheet
-* Beautiful Frontend (maybe with Youtube search for videos and +1 able)
+* Styled Frontend (maybe with Youtube search for videos and +1 able)
 * Geocoding API for Location names, small maps excerpts
 * Images of the places via Wikipedia?
 
